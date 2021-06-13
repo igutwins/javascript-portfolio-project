@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let currentTime = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, "0")}-${today.getDate()}`
 
         for (let g of games){
-            if (g.time < currentTime){
+            if (g.date < currentTime){
                 let x = new Game(g.id, g.date, g.time, g.location)
                 pastGames.push(x)
             } else {
@@ -36,10 +36,58 @@ document.addEventListener("DOMContentLoaded", () => {
                 upcomingGames.push(y)
             }
         }
+        //create upcoming game cards
+        for (let p of upcomingGames){
+            createUpcomingGame(p)
+        }
+
+        function createUpcomingGame(game){
+            let upcomingGame = document.createElement('div')
+            upcomingGame.className = "game-card"
+            let date = document.createElement('p')
+            date.innerText = `Date: ${game.date}`
+            let time = document.createElement('p') 
+            time.innerText = `Time: ${game.time}`
+            let location = document.createElement('p')
+            location.innerText = `Location: ${game.location}`
+            upcomingGame.appendChild(date)
+            upcomingGame.appendChild(time)
+            upcomingGame.appendChild(location)
+            let playersList = document.createElement('ul')
+            upcomingGame.appendChild(playersList)
+            let configObj4 = {
+
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept":"application/json"
+                    },
+                    body: JSON.stringify({
+                        game_id: game.id
+                    })
+
+            }
+            fetch("http://localhost:3000/showgameplayers", configObj4)
+            .then(r => r.json())
+            .then(players => {
+                
+                            for (let i of players){
+                                let playerName = document.createElement('li')
+                                playerName.innerText = i.name
+                                playersList.appendChild(playerName)
+                            }
+
+            })
+
+            document.getElementById('canvas').appendChild(upcomingGame)
+        }
+        
+        
+        
+        //create past games game cards
         for (let p of pastGames){
             createPastGame(p)
         }
-        //create the game card for past games
         function createPastGame(game){
             let pastGame = document.createElement('div')
             pastGame.className = "game-card"
