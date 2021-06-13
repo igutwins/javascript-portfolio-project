@@ -16,12 +16,8 @@ class Player{
     }
 };
 
-
-
-
+//scripts to run once content loaded
 document.addEventListener("DOMContentLoaded", () => {
-
-    
     //fetch games
     fetch("http://localhost:3000/games")
     .then(r => r.json())
@@ -41,10 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
         for (let p of pastGames){
-            console.log(p)
             createPastGame(p)
         }
-        //separate the game card
+        //create the game card for past games
         function createPastGame(game){
             let pastGame = document.createElement('div')
             pastGame.className = "game-card"
@@ -57,9 +52,35 @@ document.addEventListener("DOMContentLoaded", () => {
             pastGame.appendChild(date)
             pastGame.appendChild(time)
             pastGame.appendChild(location)
+            let playersList = document.createElement('ul')
+            pastGame.appendChild(playersList)
+            let playersArray = []
+            let configObj3 = {
+
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept":"application/json"
+                    },
+                    body: JSON.stringify({
+                        game_id: game.id
+                    })
+
+            }
+            fetch("http://localhost:3000/showgameplayers", configObj3)
+            .then(r => r.json())
+            .then(players => {
+                
+                            for (let i of players){
+                                let playerName = document.createElement('li')
+                                playerName.innerText = i.name
+                                playersList.appendChild(playerName)
+                            }
+
+            })
+
             document.getElementById('canvas2').appendChild(pastGame)
         }
-
         
     })
 //    );
@@ -128,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dropDown.setAttribute('name','players')
                 for (let p of playerArray){
                     let option = document.createElement('option')
-                    option.setAttribute('value', p.name )
+                    option.setAttribute('value', p.id )
                     option.innerText = p.name
                     dropDown.appendChild(option)
                 }
@@ -144,13 +165,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 button.addEventListener('click', () => {
                     let newPlayer = document.createElement('li')
-                    newPlayer.innerText = game.querySelector('select').value
+                    let playerId = game.querySelector('select').value
+                    let playerObj = playerArray.find( x => x.id == playerId)
+                    newPlayer.innerText = playerObj.name
                     playersList.appendChild(newPlayer)
                     //need to now associate those games and players here
+                    let newConfigObj = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept":"application/json"
+                        },
+                        body: JSON.stringify({
+                            game_id: gameInstance.id,
+                            player_id: playerObj.id //make dynamic
+                        })
+                    }
+
+                    fetch("http://localhost:3000/addplayer", newConfigObj)
                 })
             })
         };
-        
         
         document.getElementById('create-game-form').addEventListener("submit", createGame);
         

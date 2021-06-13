@@ -6,9 +6,15 @@ class PlayersController < ApplicationController
     end 
 
     def add_player_to_game
+        game = Game.find_by(:id => params[:game_id])
+        player = Player.find_by(:id => params[:player_id])
+        game.players << player
     end 
 
-    def remove_player_from_game
+    def show_game_players
+        game = Game.find_by(:id => params[:game_id])
+        players = game.players
+        render json: players
     end 
 
 end
