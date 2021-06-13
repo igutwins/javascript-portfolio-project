@@ -7,6 +7,7 @@ class GamesController < ApplicationController
 
     def create
         game = Game.create(date: params[:date], time: params[:time], location: params[:location])
+        render json: game
     end 
 
 end

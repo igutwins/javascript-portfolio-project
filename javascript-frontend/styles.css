@@ -4,7 +4,7 @@ body {
   }
   
   header {
-    background-color: #4caf50;
+    background-color: #4e9ecc;
     margin: 0 auto;
     height: 50px;
   }
@@ -29,25 +29,26 @@ body {
     width: 300px;
     box-shadow: 5px 5px grey;
     padding: 10px;
+    margin-bottom: 30px;
     border-radius: 10px;
   }
   
   p {
-    font-size: 1.5em;
+    font-size: 0.75em;
     color: black;
     font-family: Helvetica;
   }
   
   li {
     font-size: 1.05em;
-    list-style: none;
+    list-style: square;
     padding-right: 20px;
   }
   
   button {
     font-size: .65em;
     color: #fff;
-    background-color: green;
+    background-color: rgb(21, 27, 85);
     border-radius: 10px;
   }
   
@@ -68,3 +69,8 @@ body {
     }
   }
   
+  h3 {
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #c1cacf;
+  }
