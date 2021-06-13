@@ -10,7 +10,21 @@
       <header>
           <h2>Volleyball Organizer!</h2>
         </header>
-        <button>Create Game</button>
+        <br><br>
+        <form id="create-game-form" action="#" method="post">
+            <label for="new-game-date">Date of Game:</label>
+            <input type="date" id="game-date" name="game-date"><br><br>
+            <label for="new-game-time">Time of Game:</label>
+            <input type="time" id="game-time" name="game-time"><br><br>
+            
+            <label for="new-game-location">Game Location:</label>
+            <input type="text" id="game-location" name="game-location"><br><br>
+            <input type="submit" value="Create New Game">
+          </form>
+      
         <h3>Upcoming Games</h3>
+        <div id='canvas'></div>
+        <h3>Past Games</h3>
+        <div id='canvas2'></div>
   </body>
 </html>
